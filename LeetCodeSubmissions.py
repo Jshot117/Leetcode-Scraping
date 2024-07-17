@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 
 
+
 with open("Header.json") as f:
     headers = json.load(f)
 with open("response_offset0limit20lastkey.json") as f:
@@ -12,6 +13,10 @@ submissionDict = submission_json['submissions_dump']
 
 url = "https://leetcode.com/api/submissions/"
 
+stuff = requests.get(url, headers=headers)
+
+
+submission_json_request = stuff.json()['submissions_dump']
 
 def create_problem_markdown(problem):
     problem_file_path = problem_dir / f"{problem['title'].replace(' ', '_')}.md"
@@ -32,5 +37,5 @@ base_dir = input("Enter the base directory path: ")
 base_dir = Path(base_dir)
 problem_dir = base_dir / "Problems"
 problem_dir.mkdir(parents=True, exist_ok=True)
-print(create_problem_markdown(submissionDict[0]).absolute())
+print(create_problem_markdown(submission_json_request[0]).absolute())
 
