@@ -45,5 +45,6 @@ while submission_json_request["has_next"]:
     payload = {"offset": offset}
     request_data = requests.get(url, headers=headers, params = payload)
     submission_json_request = request_data.json()
+    # To avoid getting blocked by the server
     time.sleep(2.5)
     offset += len(submission_json_request["submissions_dump"])
