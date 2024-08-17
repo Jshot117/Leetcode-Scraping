@@ -12,7 +12,6 @@ url = "https://leetcode.com/api/submissions/"
 
 stuff = requests.get(url, headers=headers)
 
-
 submission_json_request = stuff.json()
 
 
@@ -21,11 +20,15 @@ def create_problem_markdown(problem):
     try:
         with open(problem_file_path, "w") as file:
             file.write(f"date : {datetime.datetime.fromtimestamp(problem['timestamp']).strftime("%a %d %b %Y, %I:%M%p")}\n")
-            file.write(f"**Language:** {problem['lang']}\n")
+            file.write(f"**Language:** {problem['lang']}\n") if problem['lang'] != "pythondata" else file.write(f"**Language:** python3\n")
+            file.write(f"[Submission URL](https://leetcode.com{problem['url']})\n")
             if problem["lang"] == "python3":
+                file.write(f"```python\n{problem['code']}```")
+            elif problem["lang"] == "pythondata":
                 file.write(f"```python\n{problem['code']}```")
             else:
                 file.write(f"```{problem['lang']}\n{problem['code']}```")
+            
             
         print(f"Successfully Created file: {problem_file_path}")
     except Exception as e:
